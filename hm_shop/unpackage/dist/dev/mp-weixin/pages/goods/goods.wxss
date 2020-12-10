@@ -1,0 +1,12 @@
+
+.goods_list{
+	background: #eee;
+}
+.is_over{
+	width: 100%;
+	height: 50rpx;
+	text-align: center;
+	line-height: 50rpx;
+	font-size: 30rpx;
+}
+

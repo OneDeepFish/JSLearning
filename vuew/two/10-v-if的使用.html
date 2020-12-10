@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<!-- 当v-if后面的结果为真的时候，该元素则显示；否则不显示 -->
+			<h2 v-if="isShow">{{message}}</h2>
+		</div>
+	</body>
+	<script src="../js/vue.js"></script>
+	<script>
+	    const res = new Vue({
+	        el: '#app',
+	        data: {
+	           message: '你好啊',
+			   isShow: true
+	        },
+	        methods: {
+	                  
+	        },
+	        computed: {
+	                   
+	        },
+	    })
+	</script>
+</html>

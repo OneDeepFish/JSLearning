@@ -1,0 +1,11 @@
+.box{
+	background-color: #4CD964;
+}
+.box{
+		width: 375rpx;
+		height: 375rpx;
+		background-color: $uni-color-error;
+		font-size: 40rpx;
+		color: #FFFFFF;
+}
+

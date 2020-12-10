@@ -1,0 +1,1 @@
+<view class="new_detail"><text>{{newDetail.title}}</text><view class="info"><text>{{"浏览时间:"+$root.f0}}</text><text>{{"次数:"+newDetail.click}}</text></view><view class="content"><rich-text nodes="{{newDetail.content}}"></rich-text></view></view>

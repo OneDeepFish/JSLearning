@@ -1,0 +1,1 @@
+<view><text>样式的学习</text><view class="box">我要好好学习</view><view class="iconfont icon-tupian"></view><icon type="success"></icon><icon type="waiting" size="30px"></icon><uni-icons vue-id="e312dcd4-1" type="cart" size="20" color="red" bind:__l="__l"></uni-icons></view>
