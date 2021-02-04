@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>评分</title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css"/>
+	</head>
+	<body>
+		
+		<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+		  <legend>自定义内容</legend>
+		</fieldset>
+		 
+		<div id="test5"></div>
+		<div><div id="test6"></div></div>
+		
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			layui.use(['jquery', 'rate'], function(){
+				let $ = layui.jquery
+				let rate = layui.rate;
+				rate.render({
+					elem: '#test5',
+					length: 10,        // 共计10颗星
+					value: 3,          // 默认3颗星
+					text: true,        // 显示文本
+					half: true,        //开启半星
+					theme: '#009688', //自定义主题色
+					setText: function(value){    //自定义文本的回调
+						let arrs = {
+							'1': '极差'
+							,'2': '差'
+							,'3': '中等'
+							,'4': '好'
+							,'5': '极好'
+						}
+						this.span.text(arrs[value] || ( value + "星"))
+					}
+					
+				})
+			})
+		</script>
+	</body>
+</html>

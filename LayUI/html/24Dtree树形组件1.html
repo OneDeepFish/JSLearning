@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Dtree组件的基础使用</title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css"/>
+		<link rel="stylesheet" type="text/css" href="../layui_ext/dtree/dtree.css"/>
+		<link rel="stylesheet" type="text/css" href="../layui_ext/dtree/font/dtreefont.css"/>
+	</head>
+	<body>
+		<button class="layui-btn" id="btn1">让蜀山区选中</button>
+		<button class="layui-btn" id="btn2">获取选中值</button>
+		<ul id="demoTree" class="dtree" data-id="0"></ul>
+		
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			layui.extend({
+				dtree: '../layui_ext/dist/dtree'   // dtree.js
+			}).use(['dtree', 'jquery', 'layer'],function(){
+				let $ = layui.jquery
+				let dtree = layui.dtree
+				let layer = layui.layer
+				
+				// 初始化树
+				// 1.基础数据格式
+				// var DemoTree = dtree.render({
+				// 	elem: "#demoTree",
+				// 	method: 'GET',    // 本地访问json文件，需要使用GET方法
+				// 	line: true,
+				// 	//skin: 'layui',
+				// 	ficon:  ["2", "6"],
+				// 	url: "../json/demoJson1.json" // 使用url加载（可与data加载同时存在）
+				// });
+				
+				// 2.layui风格数据格式（dataStyle）
+				// var DemoTree = dtree.render({
+				// 	elem: "#demoTree",
+				// 	method: 'GET',    // 本地访问json文件，需要使用GET方法
+				// 	dataStyle: "layuiStyle",  //使用layui风格的数据格式
+				// 	response:{message:"msg",statusCode:0},  //修改response中返回数据的定义
+				// 	url: "../json/demoJson2.json" // 使用url加载（可与data加载同时存在）
+				// });
+				
+				// 3.list集合数据格式（dataFormat）
+				// var DemoTree = dtree.render({
+				// 	elem: "#demoTree",
+				// 	method: 'GET',    // 本地访问json文件，需要使用GET方法
+				// 	dataFormat: "list",  //配置data的风格为list
+				// 	url: "../json/demoJson3.json" // 使用url加载（可与data加载同时存在）
+				// });
+				
+				// 4.layui+list集合数据格式（dataStyle + dataFormat）
+				var DemoTree = dtree.render({
+					elem: "#demoTree",
+					method: 'GET',    // 本地访问json文件，需要使用GET方法
+					dataFormat: "list",  //配置data的风格为list
+					dataStyle: "layuiStyle",  //使用layui风格的数据格式
+					response:{message:"msg",statusCode:0},  //修改response中返回数据的定义
+					url: "../json/demoJson4.json" // 使用url加载（可与data加载同时存在）
+				});
+			 // 绑定节点点击
+				dtree.on("node('demoTree')" ,function(obj){
+					layer.msg(JSON.stringify(obj.param));
+				});
+				
+				// 让蜀山区选中
+				$("#btn1").click(function(){
+					dtree.dataInit("demoTree", "001001001");  // 001001001为蜀山区的ID
+				})
+				// 获取选中值
+				$("#btn2").click(function(){
+					var param = dtree.getNowParam(DemoTree);
+					layer.msg(JSON.stringify(param))
+				})
+				
+			})
+		</script>
+	</body>
+</html>

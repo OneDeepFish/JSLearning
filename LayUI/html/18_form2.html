@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>表单元素</title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+	</head>
+	<body>
+		<form class="layui-form layui-form-pane" action="" method="" lay-filter="formTest">
+			<div class="layui-form-item">
+				<label class="layui-form-label">用户名</label>
+				<div class="layui-input-block">
+					<input type="text" name="username" lay-verify="username" placeholder="请输入用户名" class="layui-input" autocomplete="on" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">密码</label>
+				<div class="layui-input-block">
+					<input type="password" name="password" lay-verify="required" lay-reqtext="密码是必填项，岂能为空？" placeholder="请输入密码"
+					 autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">验证手机</label>
+					<div class="layui-input-inline">
+						<input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">验证邮箱</label>
+					<div class="layui-input-inline">
+						<input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">运动</label>
+					<div class="layui-input-inline">
+						<select name="interest" lay-filter="yundong" lay-search="">
+							<option value="1">足球</option>
+							<option value="2" selected="">乒乓球</option>
+							<option value="3">羽毛球</option>
+							<option value="4">篮球</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">爱好</label>
+					<div class="layui-input-block">
+						<input type="checkbox" name="hobby" lay-filter="hobby" value="写作" title="写作">
+						<input type="checkbox" name="hobby" lay-filter="hobby" value="阅读" title="阅读">
+						<input type="checkbox" name="hobby" lay-filter="hobby" value="发呆" title="发呆">
+					</div>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">开关</label>
+				<div class="layui-input-block">
+					<input type="checkbox" name="close" value="comeOn" lay-filter="close" lay-skin="switch" lay-text="ON|OFF">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">性别</label>
+				<div class="layui-input-block">
+					<input type="radio" name="sex" value="男" title="男" checked="" lay-filter="sex">
+					<input type="radio" name="sex" value="女" title="女" lay-filter="sex">
+					<input type="radio" name="sex" value="禁" title="禁用" disabled="" lay-filter="sex">
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button type="submit" id="btn1" lay-submit="" lay-filter="demoOne" class="layui-btn lay-color-red">提交1</button>
+					<button type="button" id="btn2" class="layui-btn layui-btn-primary">赋初始值</button>
+					<button type="button" id="btn3" class="layui-btn layui-btn-normal">给select赋值</button>
+					<button type="reset" id="btn4" class="layui-btn layui-btn-normal">重置</button>
+				</div>
+			</div>
+			
+		</form>
+		<form class="layui-form layui-form-pane" action="" method="" >
+			<div class="layui-form-item">
+				<label class="layui-form-label">另一个用户名</label>
+				<div class="layui-input-block">
+					<input type="text" name="usernames" lay-verify="usernames" placeholder="请输入用户名" class="layui-input" autocomplete="on" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button type="submit" id="btn5" lay-submit="" lay-filter="demoTwo" class="layui-btn lay-color-red">提交2</button>
+				</div>
+			</div>
+		</form>
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			layui.use(['form', 'layer', 'jquery'], function() {
+				let form = layui.form
+				let layer = layui.layer
+				let $ = layui.jquery
+				
+				let btn1 = document.getElementById("btn1")
+				let btn2 = document.getElementById("btn2")
+				let btn3 = document.getElementById("btn3")
+				let btn5 = document.getElementById("btn5")
+				// 1.给表单赋初始值 和 获取值
+				btn2.onclick = function(){
+					//给表单赋值
+					form.val("formTest", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+					  "username": "贤心"  // "name": "value"
+						,"password":112345
+						,"phone": 13485723070
+						,"email": '289334243@qq.com'
+					  ,"sex": "女"
+					  ,"interest": 3
+					  ,"close": 'comeOn'
+					});
+					
+					// 复选框有bug，对复选框单独进行赋值
+					let hobb = "写作,发呆"
+					let hoarr = hobb.split(",")
+					let hoChecks = $("input[name='hobby']")  // 获取所有的爱好元素
+					$.each(hoarr, function(i, ele){
+						hoChecks.each(function(j, e){
+							var jdom = $(e) // 转为jquery的dom元素
+							if(ele == jdom.val()){
+								jdom.attr("checked", true)
+							}
+						})
+					})
+
+					
+					//获取表单区域所有值
+					var data1 = form.val("formTest");
+					// 复选框有bug，对复选框单独进行取值
+					let reHobbys = []
+					let hobbys = $("input[name='hobby']:checked")
+					hobbys.each(function(i, elem){
+						reHobbys.push(elem.value)  // 此时的dom是原生元素
+					})
+					data1.hobby = reHobbys;
+					console.log(data1)   // 获取表单所有元素的值
+				}
+				
+				
+				// 2.监听表单提交
+				btn1.onclick = function(){
+					// 注意说明： 复选框支持多选，但是下面提交的时候只能获取到最后一个值，所以要重写
+					// 开关按钮，只能获取开的时候的值。关的时候不能获取值
+					// demoOne为提交按钮的lay-filter
+					form.on('submit(demoOne)', function(data){  
+						// 获取复选框的值
+						var hobbys = []
+						$("input[name='hobby']:checked").each(function(i, elem){
+							hobbys.push(elem.value)
+						})
+						data.field.hobby = hobbys
+						console.log(hobbys)
+					  console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+					  console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+					  console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+					  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+					});
+				}
+				// 经测试，当按钮放在哪个form里面，这个按钮提交的内容只提交该form里面的内容，不会提交该页面的其它
+				// form里面的元素
+				btn5.onclick = function(){
+					form.on('submit(demoTwo)', function(data){
+					  console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+					  console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+					  console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+					  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+					})
+				}
+				
+				// 4.表单验证(在表单提交的时候，会自动验证)
+ 				form.verify({
+					username: function(value, item){ //value：表单的值、item：表单的DOM对象
+				      console.log("username:" + value)
+					    if(/^\d+\d+\d$/.test(value)){
+					      return '用户名不能全为数字';
+					    }
+					    //如果不想自动弹出默认提示框，可以直接返回 true，这时你可以通过其他任意方式提示（v2.5.7 新增）
+					    if(value === 'xxx'){
+					      alert('用户名不能为敏感词');
+					      return true;
+					    }
+					  }
+					  //我们既支持上述函数式的方式，也支持下述数组的形式
+					  //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
+					  ,pass: [
+					    /^[\S]{6,12}$/
+					    ,'密码必须6到12位，且不能出现空格'
+					  ] 
+				}) 
+				
+				
+				// 5.监听select选择
+				// 请注意：如果你想监听所有的select，去掉过滤器(filter)即可。下面将不再对此进行备注。
+				form.on('select(yundong)', function(data){
+					console.log(data.elem); //得到select原始DOM对象
+					console.log(data.value); //得到被选中的值
+					console.log(data.othis); //得到美化后的DOM对象
+				})
+				
+				// 6.监听复选框选择
+				form.on('checkbox(hobby)', function(data){
+					console.log(data.elem); //得到checkbox原始DOM对象
+					console.log(data.elem.checked); //是否被选中，true或者false
+					console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+					console.log(data.othis); //得到美化后的DOM对象
+				})
+				
+				// 7.监听swith开关
+				form.on('switch(close)', function(data){
+				  console.log(data.elem); //得到checkbox原始DOM对象
+				  console.log(data.elem.checked); //开关是否开启，true或者false
+				  console.log(data.value); //开关value值，也可以通过data.elem.value得到
+				  console.log(data.othis); //得到美化后的DOM对象
+				}); 
+				
+				// 8.监听radio单选
+				form.on('radio(sex)', function(data){
+				  console.log(data.elem); //得到radio原始DOM对象
+				  console.log(data.value); //被点击的radio的value值
+				}); 
+				
+				
+				// 9.给select复选框动态添加值
+				btn3.onclick = function(){
+					// 获取select下拉框
+					let hs = $("select[name='interest']")
+					console.log(hs)
+					hs.append("<option value='5'>飞球</option>")
+					form.render()
+					
+					// 增加完之后 禁用该按钮
+					$(this).addClass("layui-btn-disabled")
+					
+					// 重新渲染
+					// form.render(); //更新全部
+					// form.render('select'); //刷新select选择框渲染
+					// form.render(null, 'test1'); //更新 lay-filter="test1" 所在容器内的全部表单状态
+					// form.render('select', 'formTest'); //更新 lay-filter="formTest" 所在容器内的全部 select 状态
+					
+				}
+				
+				// 如果是表单重置，将表单里面的重置按钮的type="reset"即可
+				
+				
+				
+			})
+
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>栅格布局</title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+	</head>
+	<body>
+<!-- 		<div class="layui-container"> -->
+		<!-- 二等分 layui-show-md-inline-block表示是否显示-->
+			<div class="layui-row">
+				<div class="layui-col-md6 layui-show-md-inline-block">
+					<div class="grid-demo grid-demo-bg1 layui-bg-green">6/12</div>
+				</div>
+				<div class="layui-col-md6 ">
+					<div class="grid-demo layui-bg-red">6/12</div>
+				</div>
+			</div>
+			<br>
+		<!-- 二等分，后面的一个带有偏移量layui-col-md-offset4 -->
+			<div class="layui-row">
+				<div class="layui-col-md4">
+					<div class="layui-bg-green">4/12</div>
+				</div>
+				<div class="layui-col-md4 layui-col-md-offset4">
+					<div class="layui-bg-red">4/12</div>
+				</div>
+			</div>
+			<br>
+			
+			<!-- 四等分，带有间距layui-col-space10 -->
+			<div class="layui-row layui-col-space10">
+				<div class="layui-col-md3">
+					<div class="layui-bg-black">3/12</div>
+				</div>
+				<div class="layui-col-md3">
+					<div class="layui-bg-red">3/12</div>
+				</div>
+				<div class="layui-col-md3">
+					<div class="layui-bg-black">3/12</div>
+				</div>
+				<div class="layui-col-md3">
+					<div class="layui-bg-red">3/12</div>
+				</div>
+			</div>
+			
+			
+			<!-- 内部嵌套 -->
+			<div class="layui-row layui-col-space5">
+			  <div class="layui-col-md5">
+			    <div class="layui-row">
+			      <div class="layui-col-md3 layui-bg-black">
+			        内部列1
+			      </div>
+			      <div class="layui-col-md9 layui-bg-green">
+			        内部列2
+			      </div>
+			      <div class="layui-col-md12 layui-bg-red">
+			        内部列3
+			      </div>
+			    </div>
+			  </div>
+				
+			  <div class="layui-col-md7">
+			    <div class="layui-row">
+			      <div class="layui-col-md12 layui-bg-black">
+			        内部列4
+			      </div>
+			      <div class="layui-col-md9 layui-bg-green">
+			        内部列5
+			      </div>
+			      <div class="layui-col-md3 layui-bg-red">
+			        内部列6
+			      </div>
+			    </div>
+			  </div>
+			</div>
+
+<!-- 		</div> -->
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

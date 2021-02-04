@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>数据表格基本使用</title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+	</head>
+	<body>
+		<table class="layui-hide" id="test" lay-filter="tests"></table>
+		<script type="text/html" id="toolbarDemo">
+			<div class="layui-btn-container">
+		    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+		    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+		    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+				<button class="layui-btn layui-btn-sm" lay-event="refresh">表格刷新</button>
+		  </div>
+		</script>
+		<script type="text/html" id="barDemo">
+			<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+		  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+		  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+		</script>
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			layui.use(['jquery', 'table'], function() {
+				let table = layui.table
+				let tableIndex = table.render({
+					elem: '#test', // 绑定表格的ID
+					title: '用户表', // table 的大标题（在文件导出等地方会用到）
+					//skin: 'line',    // 边框风格 line row nob
+					url: 'users.json', // 数据异步请求的url
+					width: 1500, // 表格的宽度。如果不设置，就是自适应父容器
+					//height: 800,    // 表格的高度
+					toolbar: '#toolbarDemo', // 开启头部工具栏
+					//defaultToolbar: [],       // 如果为空数组，代表右侧没有自带的工具栏
+					defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+						title: '提示',
+						layEvent: 'LAYTABLE_TIPS',
+						icon: 'layui-icon-tips'
+					}],
+					page: true, // 开启分页
+					totalRow: true, // 开启合计行
+					cols: [
+						[{
+							type: 'checkbox', // radio  numbers
+							fixed: 'left',
+							//LAY_CHECKED: true    // 设置全选状态，必须为checkbox才有效，也可以单独设置在json数据上
+						}, {
+							field: 'id',
+							title: 'ID',
+							width: 80,
+							fixed: 'left',
+							unresize: true,
+							sort: true
+						}, {
+							field: 'username',
+							title: '用户名',
+							width: 120,
+							edit: 'text', // 可以编辑该列，目前只有text
+							align: 'center'
+						}, {
+							field: 'email',
+							title: '邮箱',
+							width: 150,
+							edit: 'text',
+							templet: function(res) { // 将值进行转换的template
+								return '<em>' + res.email + '</em>'
+							}
+						}, {
+							field: 'sex',
+							title: '性别',
+							width: 80,
+							sort: true,
+						}, {
+							field: 'city',
+							title: '城市',
+							width: 100,
+							style: 'background-color: #5FB878; color: #fff;' // 自定义该列的样式
+						}, {
+							field: 'sign',
+							title: '签名',
+							totalRowText: '合计' // 设置合计列
+						}, {
+							field: 'experience',
+							title: '积分',
+							width: 80,
+							sort: true,
+							totalRow: true
+						}, {
+							field: 'ip',
+							title: 'IP',
+							width: 120
+						}, {
+							field: 'logins',
+							title: '登入次数',
+							width: 100,
+							sort: true,
+							totalRow: true
+						}, {
+							field: 'joinTime',
+							title: '加入时间',
+							width: 120
+						}, {
+							fixed: 'right',
+							title: '操作',
+							toolbar: '#barDemo', // 绑定操作列
+							width: 150
+						}]
+					],
+					// 数据渲染完的回调
+					done: function(res, curr, count) {
+						// 如果是异步请求数据方式，res即为你接口返回的信息。
+						//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+						console.log(res);
+						//得到当前页码
+						console.log(curr);
+
+						//得到数据总量
+						console.log(count);
+					}
+				})
+
+				//1.监听头部工具栏事件
+				table.on('toolbar(tests)', function(obj) {
+					// 说明： obj.config.id的值就是 tests
+					//  获取选中行
+					var checkStatus = table.checkStatus(obj.config.id);
+					switch (obj.event) {
+						case 'getCheckData':
+							var data = checkStatus.data;   // 获取选中行的数据
+							layer.alert(JSON.stringify(data));
+							break;
+						case 'getCheckLength':
+							var data = checkStatus.data;
+							layer.msg('选中了：' + data.length + ' 个');
+							break;
+						case 'isAll':
+							layer.msg(checkStatus.isAll ? '全选' : '未全选');
+							break;
+						// 表格重载
+						case 'refresh':
+							// 第一种方法重载
+						  //tableIndex.reload();
+							// 第二种方法重载
+							table.reload('test',{});   // 表格的ID
+							break;
+					  //自定义头工具栏右侧图标 - 提示
+						case 'LAYTABLE_TIPS':
+							layer.alert('这是工具栏右侧自定义的一个图标按钮');
+							break;
+					};
+				});
+				
+				// 2.监听复选框选中事件
+				table.on('checkbox(tests)', function(obj){
+					console.log(obj.checked)  //当前是否选中状态
+					console.log(obj.data)   //选中行的相关数据
+					console.log(obj.type)   //如果触发的是全选，则为：all，如果触发的是单选，则为：one
+				})
+				
+				// 3.监听单元格编辑事件
+				// 注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+				table.on('edit(tests)', function(obj){   
+					console.log(obj.value); //得到修改后的值
+					console.log(obj.field); //当前编辑的字段名
+					console.log(obj.data); //所在行的所有相关数据  
+				})
+				
+				// 4.监听行的单击事件
+				table.on('row(tests)', function(obj){
+					console.log(obj.tr)   //得到当前行元素对象
+					console.log(obj.data) //得到当前行数据
+					// obj.del();            //删除当前行
+				})
+				
+				// 5.监听行的双击事件(单双击事件只能用一个)
+				table.on('rowDouble(tests)', function(obj){
+					console.log(obj.tr)   //得到当前行元素对象
+					console.log(obj.data) //得到当前行数据
+					// obj.del();            //删除当前行
+				})
+				
+				// 6.监听每行的工具条事件
+				table.on('tool(tests)', function(obj){
+					console.log(obj.data)  // 获取这行的数据
+					console.log(obj.event)   // 工具条的lay-event的值
+					switch(obj.event){
+						case 'detail':
+							layer.msg('查看')
+							break;
+						case 'edit':
+						  layer.msg('编辑')
+							break;
+						case 'del':
+						  layer.msg('删除')
+							obj.del()
+							break;
+					}
+				})
+				
+
+
+
+			})
+		</script>
+	</body>
+</html>

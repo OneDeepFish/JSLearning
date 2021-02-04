@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>日期和时间选择器</title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+	</head>
+	<body>
+		<div class="layui-form">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">中文版</label>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="test1" placeholder="yyyy-MM-dd">
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			layui.use(['laydate', 'layer'], function() {
+				let laydate = layui.laydate
+				let layer = layui.layer
+				let ins = laydate.render({
+					elem: '#test1',
+					type: "date", // 默认是date 年月日
+					// range: true, // boolean/string 开启左右的选择范围
+					mark:{
+						'0-0-10': '工资'     // 每个月的10号标注为发工资的日子
+					},
+					calendar: true,  // 是否显示公历节日，只对中文版有效
+					lang: 'cn',      // 语言
+					theme: 'molv',   // 主题
+					min: '2021-01-01', // 最小时间
+					max: +7,  // 当前时间+7天
+					value: new Date(),  // 默认显示当前时间
+					format: 'yyyy-MM-dd',
+					btns: ['clear', 'now', 'confirm'],  // 底部的按钮 清空 现在 确认
+					done: function(value, date, endDate) {    // 日期选择完毕之后的回调
+						// console.log(value); //得到日期生成的值，如：2017-08-18
+						// console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+						// console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+						if(date.date === 10){
+							layer.msg("发工资的日子", {time: 2000})
+						}
+					}
+				})
+			})
+		</script>
+	</body>
+</html>

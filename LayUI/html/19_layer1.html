@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>layer弹出层</title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+	</head>
+	<body style="padding: 50px 50px;">
+		<button class="layui-btn" id="btn1">alert</button>
+		<button class="layui-btn" id="btn2">confirm</button>
+		<button class="layui-btn" id="btn3">msg</button>
+		<button class="layui-btn" id="btn4">load</button>
+		<button class="layui-btn" id="btn5">tips</button>
+		<button class="layui-btn" id="btn6">prompt</button>
+		<button class="layui-btn" id="btn7">tab</button>
+
+
+
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			layui.use(['jquery', 'layer'], function() {
+				let $ = layui.jquery
+				let layer = layui.layer
+
+				// 1、layer.alert(content, options, yes) - 普通信息框
+				$("#btn1").click(function() {
+					// layer.alert('只想简单的提示');
+					// layer.alert('加了个图标', {icon: 3}); // icon： 0-6
+					let index = layer.alert('有了回调', {icon: 3}, function() {
+						//do somethin
+						//alert(index)
+						layer.close(index);
+					});
+				})
+				
+				// 2、layer.confirm(content, options, yes, cancel) - 询问框
+				$("#btn2").click(function(){
+					layer.confirm('是否关闭?', {icon: 3, title:'提示'}, function(index){
+					  layer.close(index);
+					});
+				})
+				// 3、layer.msg(content, options, end) - 提示框
+				$("#btn3").click(function(){
+					layer.msg("我是提示", {time:2000, icon:4}, function(index){
+						alert("已经提示您啦")
+					})
+				})
+				// 4、layer.load(icon, options) - 加载层,默认不会自动关闭
+				$("#btn4").click(function(){
+					var index = layer.load(1, {time: 10*1000}); //又换了种风格，并且设定最长等待10秒 
+					// layer.close(index)
+				})
+				// 5、layer.tips(content, follow, options) - tips层
+				$("#btn5").click(function(){
+					// 支持上右下左四个方向，通过tips: 1-4进行方向设定
+					layer.tips("在上面提示", "#btn4",{tips:2})
+				})
+				// 6、layer.prompt(options, yes) - 输入层
+				$("#btn6").click(function(){
+					layer.prompt({
+					  formType: 2,  //输入框类型，支持0（文本）默认1（密码）2（多行文本）
+					  value: '初始值',
+					  title: '请输入值',
+						maxmin: true,
+						offset:['71%','72%'],  //右下角显示rb['460px','72%']
+					  area:['385px','220px'], //自定义文本域宽高
+					}, function(value, index, elem){
+					  alert(value); //得到value
+					  // layer.close(index);
+					});
+					
+					
+				})
+				// 7、layer.tab(options) - tab层
+				$("#btn7").click(function(){
+ 					layer.tab({
+					  area: ['600px', '300px'],
+					  tab: [{
+					    title: 'TAB1', 
+					    content: '内容1'
+					  }, {
+					    title: 'TAB2', 
+					    content: '内容2'
+					  }, {
+					    title: 'TAB3', 
+					    content: '内容3'
+					  }]
+					});   					
+				})
+				
+				
+				// 8、关闭特定层
+				//当你想关闭当前页的某个层时
+/* 				var index = layer.open();
+				var index = layer.alert();
+				var index = layer.load();
+				var index = layer.tips();
+				//正如你看到的，每一种弹层调用方式，都会返回一个index
+				layer.close(index); //此时你只需要把获得的index，轻轻地赋予layer.close即可
+				 
+				//如果你想关闭最新弹出的层，直接获取layer.index即可
+				layer.close(layer.index); //它获取的始终是最新弹出的某个层，值是由layer内部动态递增计算的
+				 
+				//当你在iframe页面关闭自身时
+				var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+				parent.layer.close(index); //再执行关闭   */
+				
+				
+				// 9、关闭所有层
+/* 				layer.closeAll(); //疯狂模式，关闭所有层
+				layer.closeAll('dialog'); //关闭信息框
+				layer.closeAll('page'); //关闭所有页面层
+				layer.closeAll('iframe'); //关闭所有的iframe层
+				layer.closeAll('loading'); //关闭加载层
+				layer.closeAll('tips'); //关闭所有的tips层 */
+				
+
+
+			})
+		</script>
+	</body>
+</html>

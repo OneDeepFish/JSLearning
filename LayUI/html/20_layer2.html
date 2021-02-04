@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>layer弹出层</title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+	</head>
+	<body style="padding: 50px 50px;">
+		<button class="layui-btn" id="btn1">layer.open(0)默认</button>
+		<button class="layui-btn" id="btn2">layer.open(1)页面层</button>
+		<button class="layui-btn" id="btn3">layer.open(2)iframe层</button>
+
+
+		<div id="showDialog" style="display: none;">
+			<div class="layui-form">
+				<div class="layui-form-item">
+					<label class="layui-form-label">用户名</label>
+					<div class="layui-input-block">
+						<input type="text" name="username" lay-verify="username" placeholder="请输入用户名" class="layui-input" autocomplete="on" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			layui.use(['jquery', 'layer', 'form'], function() {
+				let $ = layui.jquery
+				let layer = layui.layer
+				let form = layui.form
+
+				// 1、layer.open(0)默认
+				$("#btn1").click(function() {
+					let index = layer.open({
+						type: 0,       // 0信息框(默认)
+						title: '提示', // 如果你不想显示标题栏，你可以title: false
+						content: '我是内容',
+						skin: 'layui-layer-lan', // 主题 layui-layer-molv
+						area: ['500px', '300px'], // 默认是auto
+						offset: 'auto', // (rb:右下角)位置 t r b l; 拼接的时候左右在前 上下在后 
+						icon: 0, // 0-6
+						btn: ['按钮一', '按钮二', '按钮三'],
+						yes: function(index, layero) {
+							//按钮【按钮一】的回调
+						},
+						btn2: function(index, layero) {
+							//按钮【按钮二】的回调
+							//return false 开启该代码可禁止点击该按钮关闭
+						},
+						btn3: function(index, layero) {
+							//按钮【按钮三】的回调
+							//return false 开启该代码可禁止点击该按钮关闭
+						},
+						cancel: function() {
+							//右上角关闭回调
+							//return false 开启该代码可禁止点击该按钮关闭
+						},
+						btnAlign: 'c', // c 按钮居中 l左对齐  r 右对齐 经测试不管用
+						closeBtn: 2, // 右上角关闭按钮，默认为1   值有1和2
+						shade: [0.8, '#393D49'], // 遮罩层
+						shadeClose: true, // 是否点击遮罩关闭,默认为false. 可以设定shadeClose来控制点击弹层外区域关闭。
+						time: 2000 // 两秒之后弹框关闭
+					})
+				})
+
+				// 2、layer.open(1)页面层
+				$("#btn2").click(function() {
+					let index = layer.open({
+						type: 1,
+						title: '注册', // 如果你不想显示标题栏，你可以title: false
+						content: $('#showDialog'), // 这里可以传递页面元素，当type：1页面成的时候;也可以使用ajax进行请求
+						skin: 'layui-layer-lan', // 主题 layui-layer-molv
+						area: ['500px', '300px'], // 默认是auto
+						offset: 'auto', // (rb:右下角)位置 t r b l; 拼接的时候左右在前 上下在后 
+						icon: 0, // 0-6
+						shade: [0.8, '#393D49'], // 遮罩层
+						shadeClose: true, // 是否点击遮罩关闭,默认为false. 可以设定shadeClose来控制点击弹层外区域关闭。
+						maxmin: true, // 开启最大最小化，只对type为1和2的时候有效
+					})
+
+					// $.post('url', {}, function(str){
+					//   layer.open({
+					//     type: 1,
+					//     content: str //注意，如果str是object，那么需要字符拼接。
+					//   });
+					// });
+
+				})
+				// 3、layer.open(2)iframe层
+				$("#btn3").click(function() {
+					let index = layer.open({
+						type: 2,
+						title: '跳转',             // 如果你不想显示标题栏，你可以title: false
+						content: 'http://www.baidu.com', // 这里可以url，
+						skin: 'layui-layer-lan', // 主题 layui-layer-molv
+						area: ['500px', '300px'], // 默认是auto
+						offset: 'auto', // (rb:右下角)位置 t r b l; 拼接的时候左右在前 上下在后 
+						icon: 0, // 0-6
+						shade: [0.8, '#393D49'], // 遮罩层
+						shadeClose: true, // 是否点击遮罩关闭,默认为false. 可以设定shadeClose来控制点击弹层外区域关闭。
+						maxmin: true, // 开启最大最小化，只对type为1和2的时候有效
+					})
+				})
+
+			})
+		</script>
+	</body>
+</html>

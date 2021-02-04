@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css"/>
+	</head>
+	<body>
+		<button class="layui-btn" id="btn">默认按钮</button>
+		
+		<a href="http://www.baidu.com" class="layui-btn layui-btn-warm" >暖色按钮</a>
+		
+		<button type="button" class="layui-btn layui-btn-sm layui-btn-primary">
+		  <i class="layui-icon">&#x1002;</i>
+		</button>
+		
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			// 按钮事件监听
+			layui.use(['jquery'], function(){
+				let $ = layui.jquery
+				$(".layui-btn").click(function(){
+					alert($(this).html())
+				})
+				
+			})
+		</script>
+	</body>
+</html>

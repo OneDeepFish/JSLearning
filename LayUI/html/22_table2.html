@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>数据表格综合案例</title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+	</head>
+	<body>
+		<!-- 筛选条件 -->
+		<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+			<legend>查询条件</legend>
+		</fieldset>
+		<form class="layui-form" lay-filter="searchForm">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<div class="layui-form-label">用户ID</div>
+					<div class="layui-input-inline">
+						<input type="text" name="id" id="id" value="" class="layui-input" />
+					</div>
+				</div>
+				<div class="layui-inline">
+					<div class="layui-form-label">用户姓名</div>
+					<div class="layui-input-inline">
+						<input type="text" name="username" id="username" value="" class="layui-input" />
+					</div>
+				</div>
+				<div class="layui-inline">
+					<div class="layui-form-label">邮箱</div>
+					<div class="layui-input-inline">
+						<input type="text" name="email" id="email" value="" class="layui-input" />
+					</div>
+				</div>
+				<div class="layui-inline">
+					<div class="layui-form-label">开始时间</div>
+					<div class="layui-input-inline">
+						<input type="text" name="startDate" id="startDate" class="layui-input" />
+					</div>
+				</div>
+				<div class="layui-inline">
+					<div class="layui-form-label">结束时间</div>
+					<div class="layui-input-inline">
+						<input type="text" name="endDate" id="endDate" class="layui-input" />
+					</div>
+				</div>
+				<div class="layui-inline">
+					<div class="layui-form-label">性别</div>
+					<div class="layui-input-inline">
+						<input type="radio" name="sex" id="" value="男" title="男" />
+						<input type="radio" name="sex" id="" value="女" title="女" />
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item" style="text-align:center;">
+				<div class="layui-input-block">
+					<button type="button" id="btn1" class="layui-btn lay-color-red">查询</button>
+					<button type="reset" id="btn2" class="layui-btn layui-btn-normal">重置</button>
+				</div>
+			</div>
+		</form>
+		<!-- 数据表格 -->
+		<table class="layui-hide" id="test" lay-filter="tests"></table>
+
+		<!-- 增加修改弹框 -->
+		<div style="display:none;" id="showDialog">
+			<form class="layui-form" lay-filter="addUpdateForm" id="addUpdateForm">
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<div class="layui-form-label">用户ID</div>
+						<div class="layui-input-inline">
+							<input type="text" name="id" id="id" value="" class="layui-input" lay-verify="required" />
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<div class="layui-form-label">用户姓名</div>
+						<div class="layui-input-inline">
+							<input type="text" name="username" id="username" value="" class="layui-input" lay-verify="required" />
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<div class="layui-form-label">邮箱</div>
+						<div class="layui-input-inline">
+							<input type="text" name="email" id="email" value="" class="layui-input" lay-verify="email" />
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<div class="layui-form-label">性别</div>
+						<div class="layui-input-inline">
+							<input type="radio" name="sex" id="" value="男" title="男" />
+							<input type="radio" name="sex" id="" value="女" title="女" />
+						</div>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<!-- layui-icon layui-icon-face-smile -->
+					<div class="layui-input-block">
+						<button type="button" id="btn1" class="layui-btn lay-color-red layui-icon layui-icon-face-smile" lay-submit=""
+						 lay-filter="doSubmit">提交</button>
+						<button type="reset" id="btn2" class="layui-btn layui-btn-normal layui-icon layui-icon-face-refresh">重置</button>
+						<button type="button" id="btn" class="layui-btn layui-btn-normal layui-icon layui-icon-face-close">关闭</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!-- 左侧工具栏 -->
+		<script type="text/html" id="toolbarDemo">
+			<div class="layui-btn-container">
+		    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">增加</button>
+		  </div>
+		</script>
+
+		<!-- 行内工具栏 -->
+		<script type="text/html" id="barDemo">
+			<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+		  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+		</script>
+
+
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			layui.use(['jquery', 'table', 'layer', 'form', 'laydate'], function() {
+				let $ = layui.jquery
+				let layer = layui.layer
+				let form = layui.form
+				let table = layui.table
+				let laydate = layui.laydate
+
+				// 绑定开始时间
+				laydate.render({
+					elem: '#startDate'
+				})
+				// 绑定结束时间
+				laydate.render({
+					elem: '#endDate'
+				})
+
+				// 获取查询条件的值
+				$('#btn1').click(function() {
+					let data = form.val("searchForm") // 获取form所有元素的值
+					layer.msg(JSON.stringify(data))
+				})
+
+				let tableIndex = table.render({
+					elem: '#test', // 绑定表格的ID
+					title: '用户表', // table 的大标题（在文件导出等地方会用到）
+					url: 'http://localhost:8000/index', // 数据异步请求的url
+					toolbar: '#toolbarDemo', // 开启头部工具栏
+					defaultToolbar: [], //去掉右侧自带的工具栏
+					page: true, // 开启分页
+					cols: [
+						[{
+							type: 'checkbox', // radio  numbers
+							fixed: 'left',
+							//LAY_CHECKED: true    // 设置全选状态，必须为checkbox才有效，也可以单独设置在json数据上
+						}, {
+							field: 'id',
+							title: 'ID',
+							align: 'center',
+							//width: 80,
+							fixed: 'left',
+							unresize: true,
+							sort: true
+						}, {
+							field: 'username',
+							title: '用户名',
+							align: 'center',
+							//width: 120,
+							edit: 'text', // 可以编辑该列，目前只有text
+							align: 'center'
+						}, {
+							field: 'email',
+							title: '邮箱',
+							align: 'center',
+							//width: 150,
+							edit: 'text',
+							templet: function(res) { // 将值进行转换的template
+								return '<em>' + res.email + '</em>'
+							}
+						}, {
+							field: 'sex',
+							title: '性别',
+							align: 'center',
+							//width: 80,
+							sort: true,
+						}, {
+							fixed: 'right',
+							title: '操作',
+							align: 'center',
+							toolbar: '#barDemo', // 绑定操作列
+							//width: 150
+						}]
+					]
+				})
+
+				// 1.监听头部工具栏事件
+				table.on('toolbar(tests)', function(obj) {
+					var checkStatus = table.checkStatus(obj.config.id)
+					let event = obj.event;
+					switch (event) {
+						case 'getCheckData':
+							// 打开弹框
+							openAddDialog();
+							// 清空form
+							// form.val('addUpdateForm', '')    // 这个方法不能用
+							// 说明：
+							// 1.将dom对象改为jquery对象： $(dom)
+							// 2.将jquery对象改为form对象： $('#addUpdateForm')[0]
+							// 由于form对象没有reset方法，所以改为dom对象
+							$('#addUpdateForm')[0].reset();
+							addUpdateData(obj)
+							break;
+
+					}
+				})
+
+				// 2.监听行内工具栏事件
+				table.on('tool(tests)', function(obj) {
+					let event = obj.event
+					switch (event) {
+						case 'edit':
+							// 打开修改用户对话框
+							openUpdateDialog();
+							// 给form赋值
+							form.val('addUpdateForm', obj.data)
+							// 修改完form后，更新该行数据
+							addUpdateData(obj)
+							break;
+						case 'del':
+							layer.msg('删除了ID为' + obj.data.id + "的数据")
+							obj.del() // 删除页面上展示的数据
+							break;
+					}
+				})
+				// 弹框的ID
+				let layerIndex;
+				// 增加和修改数据的后台请求url
+				let url;
+				// 打开增加弹框
+				function openAddDialog() {
+					url = "/post/addData.action"
+					layerIndex = layer.open({
+						type: 1,
+						title: '增加用户',
+						content: $('#showDialog'),
+						area: ['400px']
+					})
+				}
+
+				// 打开编辑弹框
+				function openUpdateDialog() {
+					url = "/post/updateData.action"
+					layerIndex = layer.open({
+						type: 1,
+						title: '修改用户',
+						content: $('#showDialog'),
+						area: ['400px']
+					})
+				}
+				
+				// 增加和修改数据的具体操作
+				function addUpdateData(obj) {
+					// 监听增加/编辑弹框的form元素
+					form.on('submit(doSubmit)', function(data) {
+						switch (url) {
+							case '/post/addData.action':
+								// 如果是增加用户，首先获取表格的数据(jquery表单序列化)
+								// let param = $('#addUpdateForm').serialize()
+								
+								// 如果是增加用户，首先获取表格的数据(表单序列化)
+								 let param = form.val('addUpdateForm')
+								
+								
+								// 进行ajax请求，获取新的数据,页面表格刷新
+								$.ajax({
+									url:'http://localhost:8000/post/addData.action',
+									type:'post',
+									data: param,
+									success: function(data){
+										// 增加一条数据之后，表格刷新
+										tableIndex.reload({
+											data: data
+										})
+									}
+								})
+								
+								break;
+							case '/post/updateData.action':
+								// 如果是修改用户,更新表格数据 obj.field为form的所有数据，为{key,value}的键值对对象
+								obj.update(data.field)
+								break;
+						}
+						// 关闭弹框
+						layer.close(layerIndex);
+						
+
+
+						
+
+					})
+				}
+
+
+				// 增加/编辑弹框的关闭按钮
+				$('#btn').click(function() {
+					layer.close(layerIndex)
+				})
+
+
+			})
+		</script>
+	</body>
+</html>
