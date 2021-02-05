@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>01_初识jQuery</title>
+		<link rel="stylesheet" type="text/css" href="../layui/css/layui.css" />
+	</head>
+	<body>
+		<!--
+需求: 点击"确定"按钮, 提示输入的值
+-->
+		<form class="layui-form" action="" method="">
+			<div class="layui-form-item">
+				<label class="layui-form-label">用户名</label>
+				<div class="layui-input-inline">
+					<input type="text" id="username" name="usernames" lay-verify="usernames" placeholder="请输入用户名" class="layui-input" autocomplete="on" />
+				</div>
+			</div>
+		</form>
+		<button id="btn" class="layui-btn layui-bg-red">jQuery版</button>
+
+		<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			layui.use(['jquery', 'form', 'layer'], function(){
+				let $ = layui.jquery
+				let layer = layui.layer
+				let form = layui.form
+				$('#btn').click(function(){
+					layer.msg($('#username').val())
+				})
+			})
+		</script>
+	</body>
+
+</html>
