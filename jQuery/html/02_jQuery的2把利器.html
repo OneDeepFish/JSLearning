@@ -19,5 +19,19 @@
   * 得到jQuery对象: 执行jQuery函数返回的就是jQuery对象
   * 使用jQuery对象: $obj.xxx()
 -->
+<script src="../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	layui.use(['jquery'], function(){
+		let $ = layui.jquery
+		// jQuery核心函数
+		console.log($)
+		console.log(typeof $ )     // function
+		
+		// jQuery核心对象
+		console.log(typeof $())
+		console.log($() instanceof Object)
+		
+	})
+</script>
 </body>
 </html>
