@@ -29,13 +29,28 @@
 3. $('body,html').scrollTop(60);
   滚动到指定位置(兼容chrome和IE)
 -->
-<script src="js/jquery-1.10.1.js"></script>
+<script src="../layui/layui.js"></script>
 <script>
   /*
    需求:
    1. 得到div或页面滚动条的坐标
    2. 让div或页面的滚动条滚动到指定位置
    */
+  layui.use(['jquery'], function(){
+	  let $ = layui.jquery
+	  $("#btn1").click(function(){
+		  // 1. 得到div或页面滚动条的坐标
+		  console.log($('div').scrollTop())
+		  // body兼容谷歌， html兼容IE $("body/html").scrollTop()在不同的浏览器有可能为0，所以两者相加
+		  console.log($("body").scrollTop()+$("html").scrollTop())    // 这个用来获取值
+	  })
+	  
+	  // 2. 让div或页面的滚动条滚动到指定位置
+	  $("#btn2").click(function(){
+		  $("div").scrollTop(100)
+		  $("html,body").scrollTop(300)   // (兼容chrome和IE)  这个用来设置值
+	  })
+  })
 </script>
 </body>
 

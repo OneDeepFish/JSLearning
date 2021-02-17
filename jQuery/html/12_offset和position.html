@@ -47,7 +47,7 @@
   * offset(): 相对页面左上角的坐标
   * position(): 相对于父元素左上角的坐标
 -->
-<script src="js/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="../layui/layui.js" type="text/javascript"></script>
 <script type="text/javascript">
   /*
   需求:
@@ -59,6 +59,33 @@
   2. 点击 btn2
     设置 div2 相对于页面的左上角的位置
    */
+  layui.use(['jquery'], function(){
+	  let $ = layui.jquery
+	  // 1. 点击 btn1
+	  $("#btn1").click(function(){
+		 //   打印 div1 相对于页面左上角的位置
+		let dic1 = $(".div1").offset()
+		console.log(dic1.left, dic1.top)    // 10 20
+		 //   打印 div2 相对于页面左上角的位置
+		let dic2 = $(".div2").offset()
+		console.log(dic2.left, dic2.top);   // 10 70
+		 //   打印 div1 相对于父元素左上角的位置
+		 let dip1 = $(".div1").position()   // 10 20
+		 console.log(dip1.left, dip1.top)
+		 //   打印 div2 相对于父元素左上角的位置 
+		 let dip2 = $(".div2").position()   // 0 50
+		 console.log(dip2.left, dip2.top);
+	  })
+	  
+	  // 2. 点击 btn2
+	  $("#btn2").click(function(){
+		  //   设置 div2 相对于页面的左上角的位置
+		  $(".div2").offset({
+			  top: 50,
+			  left: 50
+		  })
+	  })
+  })
 </script>
 </body>
 </html>

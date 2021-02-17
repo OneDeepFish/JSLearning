@@ -71,7 +71,7 @@
   * remove()
     删除所有匹配的元素
 -->
-<script src="js/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="../layui/layui.js" type="text/javascript"></script>
 <script type="text/javascript">
   /*
    需求:
@@ -82,6 +82,35 @@
    5. 将在id为ul2的ul下的li(title为hello)全部替换为p
    6. 移除id为ul2的ul下的所有li
    */
+  layui.use(['jquery'], function(){
+	  let $ = layui.jquery
+	  // 1. 向id为ul1的ul下添加一个span(最后)
+	  $("#ul1").append("<span>append添加的span</span>")
+	  $("<br><span>appendTo添加的span</span>").appendTo($("#ul1"))
+	  
+	  // 2. 向id为ul1的ul下添加一个span(最前)
+	  $("#ul1").prepend("<br><span>prepend添加的span</span>")
+	  $("<span>prependTo添加的span</span>").prependTo($("#ul1"))
+	  
+	  // 3. 在id为ul1的ul下的li(title为hello)的前面添加span
+	  // $("#ul1").children("li[title='hello']").before("<span>insert添加的span</span>")
+	  $("#ul1>li[title='hello']").before("<span>insert添加的span</span>")
+	  
+	  // 4. 在id为ul1的ul下的li(title为hello)的后面添加span
+	  $("#ul1>li[title='hello']").after("<span>after添加的span</span>")
+	  
+	  // 5. 将在id为ul2的ul下的li(title为hello)全部替换为p
+	  // replaceWith参数为标签字符串
+	  // replaceAll参数为jquery对象
+	  $("#ul2>li[title=hello]").replaceWith("<p>replaceWith替换的p</p>")
+	  
+	  // 6. 移除id为ul2的ul下的所有li
+	  // $("#ul2").empty()   // 删除匹配的元素集合中所有的子节点。ul2保留
+	  // $("#ul2>li").remove()    // 删除元素本身
+	  $("#ul2").children().remove("li")
+	  
+	  
+  })
 </script>
 </body>
 </html>
