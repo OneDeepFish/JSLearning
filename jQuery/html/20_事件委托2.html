@@ -34,9 +34,27 @@
   * 设置事件委托: $(parentSelector).delegate(childrenSelector, eventName, callback)
   * 移除事件委托: $(parentSelector).undelegate(eventName)
 -->
-<script src="js/jquery-1.10.1.js"></script>
+<script src="../layui/layui.js"></script>
 <script>
-
+	layui.use(['jquery'], function(){
+		let $ = layui.jquery
+		// 事件委派，给父元素ul绑定监听回调
+		$("ul").delegate("li", "click", function(){
+			// this指子元素，也就是委托方，li
+			$(this).css("background", "red")
+		})
+		
+		// 因为有了事件委派，后来添加的元素也自动绑定了监听
+		$("#btn1").click(function(){
+			$("ul").append("<li>添加元素</li>")
+		})
+		
+		// 移除事件监听
+		$("#btn2").click(function(){
+			$("ul").undelegate("click")
+		})
+	})
+	
 </script>
 </body>
 </html>

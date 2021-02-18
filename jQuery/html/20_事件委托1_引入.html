@@ -22,13 +22,25 @@
 <!--
 绑定事件监听的问题: 新加的元素没有监听
 -->
-<script src="js/jquery-1.10.1.js"></script>
+<script src="../layui/layui.js"></script>
 <script>
   /*
    需求：
    1. 点击 li 背景就会变为红色
    2. 点击 btn1 就添加一个 li
   */
+ layui.use(['jquery'], function(){
+	 let $ = layui.jquery
+	 // 1. 点击 li 背景就会变为红色
+	 $("ul>li").on("click", function(){
+		 $(this).parent().css("background", "red")
+	 })
+	 // 2. 点击 btn1 就添加一个 li
+	 $("#btn").click(function(){
+		 // 新添加的元素并没有绑定监听，要解决这个问题，可以使用事件委派
+		 $("ul").append("<li>新添加的li</li>")
+	 })
+ })
 
 </script>
 </body>

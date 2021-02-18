@@ -34,8 +34,8 @@
 2. 扩展jQuery对象的方法
   $.fn.extend(object)
 -->
-<script src="js/jquery-1.10.1.js" type="text/javascript"></script>
-<script src="js/my_jQuery_plugin.js" type="text/javascript"></script>
+<script src="../js/jquery-1.10.1.js" type="text/javascript"></script>
+<script src="../js/myJqueryPlugin.js" type="text/javascript"></script>
 <script type="text/javascript">
   /*
    需求：
@@ -49,7 +49,23 @@
      * unCheckAll() : 全不选
      * reverseCheck() : 全反选
    */
-
+	console.log($.min(3, 5), $.max(3, 5));
+	console.log("--------------"+ $.leftTrim("   atguigu    ") + "--------------" );
+	console.log("--------------"+ $.rightTrim("   atguigu    ") + "--------------" );
+	
+	let bobys = $(':checkbox[name="items"]')
+	// 全选
+	$("#checkedAllBtn").click(function(){
+		bobys.checkAll()
+	})
+	// 全不选
+	$("#checkedNoBtn").click(function(){
+		bobys.unCheckAll()
+	})
+	// 反选
+	$("#reverseCheckedBtn").click(function(){
+		bobys.reverseCheck()
+	})
 </script>
 </body>
 </html>

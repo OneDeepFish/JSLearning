@@ -11,14 +11,14 @@
 <!--
 区别: window.onload与 $(document).ready()
   * window.onload
-    * 包括页面的图片加载完后才会回调(晚)
+    * 包括页面的图片加载完后才会回调(晚)，所以有图片加载的页面最好使用window.onload
     * 只能有一个监听回调
   * $(document).ready()
     * 等同于: $(function(){})
     * 页面加载完就回调(早)
-    * 可以有多个监听回调
+    * 可以添加多个监听回调
 -->
-<script type="text/javascript" src="js/jquery-1.10.1.js"></script>
+<script type="text/javascript" src="../js/jquery-1.10.1.js"></script>
 <script type="text/javascript">
   /*
    需求：
@@ -27,6 +27,27 @@
    3. 在 window.onload 中打印宽度
    4. 在 img 加载完成后打印宽度
    */
+  let img = $("#logo")
+  // 1. 直接打印img的宽度，观察其值
+  console.log(img.width());    // 一开始的时候为0
+  // 2. 在 $(function(){}) 中 打印 img 的宽度
+  $(function(){
+	  console.log("ready1 width"+ img.width());
+  })
+  $(document).ready(function(){
+	  console.log("ready2 width"+ img.width());
+  }) // 由于window.onload只能添加一个，所以只会执行下一个window.onload
+  // 3. 在 window.onload 中打印宽度
+  window.onload = function(){
+	  console.log("onload1 width"+ img.width());
+  }   // $(function(){})可以添加多个
+  window.onload = function(){
+  	  console.log("onload2 width"+ img.width());
+  }
+  // 4. 在 img 加载完成后打印宽度
+  img.on("load", function(){
+	  console.log("img load"+ $(this).width());
+  })
 </script>
 </body>
 </html>
