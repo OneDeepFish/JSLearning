@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>03_回到顶部</title>
+  <style>
+    #to_top {
+      width: 30px;
+      height: 40px;
+      font: 14px/20px arial;
+      text-align: center;
+      background: #06c;
+      position: fixed;
+      cursor: pointer;
+      color: #fff;
+      left: 1250px;
+      top: 500px;
+    }
+  </style>
+</head>
+<body style="height: 2000px;">
+
+<div id="to_top">返回顶部</div>
+	
+<script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	/**
+	 * 滚动分为直接滚动到顶部和平滑滚动到顶部
+	 */
+	
+	layui.use(['jquery'], function(){
+		let $ = layui.jquery
+		
+		$('#to_top').click(function(){
+			// 1.直接滚动到顶部
+			// $('html,body').scrollTop(0)
+			
+			// 2.平滑滚动到顶部
+			/*分析：1.获取当前位置到顶部的距离为总距离， 设置滚动的总时间以及滚动的时间间隔，求出每个间隔时间滚动的距离。
+			       2. 利用定时器按照每段的距离进行滚动
+				   3. 当滚动的顶部的时候，设置总距离为0，并且关闭定时器
+			 */
+			// 获取当前位置到顶部的距离
+			let totalDis = $("body").scrollTop()+$("html").scrollTop()
+			// 设置滚动的总时间为多少毫秒
+			let totalTime = 2000
+			// 设置滚动的时间间隔
+			let inTime = 100
+			// 求出每次时间间隔滚动的距离
+			let inDis = totalDis/(totalTime/inTime)
+			// 设置定时器进行滚动
+			let inId = setInterval(function(){
+				// 减去每次滚动的距离
+				totalDis -= inDis
+				// 如果距离顶部的距离<=0，则修正为为0，且关闭定时器
+				if(totalDis <= 0 ){
+					totalDis = 0
+					clearInterval(inId)
+				}
+				$("html,body").scrollTop(totalDis)
+			}, inTime)
+	　　　　
+		})
+		
+	})
+</script>
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>02_多Tab点击切换</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #tab li {
+      float: left;
+      list-style: none;
+      width: 80px;
+      height: 40px;
+      line-height: 40px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    #container {
+      position: relative;
+    }
+
+    #content1, #content2, #content3 {
+      width: 300px;
+      height: 100px;
+      padding: 30px;
+      position: absolute;
+      top: 40px;
+      left: 0;
+    }
+
+    #tab1, #content1 {
+      background-color: #ffcc00;
+    }
+
+    #tab2, #content2 {
+      background-color: #ff00cc;
+    }
+
+    #tab3, #content3 {
+      background-color: #00ccff;
+    }
+  </style>
+</head>
+<body>
+<h2>多Tab点击切换</h2>
+<ul id="tab">
+  <li id="tab1" value="1">10元套餐</li>
+  <li id="tab2" value="2">30元套餐</li>
+  <li id="tab3" value="3">50元包月</li>
+</ul>
+<div id="container">
+  <div id="content1">
+    10元套餐详情：<br/>&nbsp;每月套餐内拨打100分钟，超出部分2毛/分钟
+  </div>
+  <div id="content2" style="display: none">
+    30元套餐详情：<br/>&nbsp;每月套餐内拨打300分钟，超出部分1.5毛/分钟
+  </div>
+  <div id="content3" style="display: none">
+    50元包月详情：<br/>&nbsp;每月无限量随心打
+  </div>
+</div>
+<script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	layui.use(['jquery'], function(){
+		let $ = layui.jquery
+		// 第一种写法，先让所有的看不见，然后在让点击的那个看见
+		// $('#tab>li').click(function(){
+		// 	$('#container>div').css('display', 'none')   // 隐藏所有的div
+		// 	// 获取点击的tab索引
+		// 	let index = $(this).index() // 获取当前元素在兄弟元素中的位置
+		// 	$('#container>div')[index].style.display = "block"  // $('#container>div')[index]为dom原生元素
+		// })
+		
+		// 第二种写法：先让上一次看的见的元素看不见，然后在让本地点击的tab看的见
+		let currentIndex = 0
+		$('#tab>li').click(function(){
+			$('#container>div')[currentIndex].style.display = "none"
+			// 获取点击的tab索引
+			let index = $(this).index() // 获取当前元素在兄弟元素中的位置
+			// 让本点击的那个tab能够看得见
+			$('#container>div')[index].style.display = "block"
+			currentIndex = index
+		})
+	})
+</script>
+</body>
+</html>

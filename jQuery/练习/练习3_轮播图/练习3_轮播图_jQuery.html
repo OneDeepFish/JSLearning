@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>焦点轮播图</title>
+		<style type="text/css">
+			/*去除内边距,没有链接下划线*/
+			* {
+				margin: 0;
+				padding: 0;
+				text-decoration: none;
+			}
+
+			/*让<body有20px的内边距*/
+			body {
+				padding: 20px;
+			}
+
+			/*最外围的div*/
+			#container {
+				width: 600px;
+				height: 400px;
+				overflow: hidden;
+				position: relative;
+				/*相对定位*/
+				margin: 0 auto;
+			}
+
+			/*包含所有图片的<div>*/
+
+			#list {
+				width: 4200px;
+				/*7张图片的宽: 7*600 */
+				height: 400px;
+				position: absolute;
+				/*绝对定位*/
+				z-index: 1;
+
+			}
+
+			/*所有的图片<img>*/
+			#list img {
+				float: left;
+				/*浮在左侧*/
+			}
+
+			/*包含所有圆点按钮的<div>*/
+			#pointsDiv {
+				position: absolute;
+				height: 10px;
+				width: 100px;
+				z-index: 2;
+				bottom: 20px;
+				left: 250px;
+			}
+
+			/*所有的圆点<span>*/
+
+			#pointsDiv span {
+				cursor: pointer;
+				float: left;
+				border: 1px solid #fff;
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background: #333;
+				margin-right: 5px;
+			}
+
+			/*第一个<span>*/
+
+			#pointsDiv .on {
+				background: orangered;
+			}
+
+			/*切换图标<a>*/
+
+			.arrow {
+				cursor: pointer;
+				display: none;
+				line-height: 39px;
+				text-align: center;
+				font-size: 36px;
+				font-weight: bold;
+				width: 40px;
+				height: 40px;
+				position: absolute;
+				z-index: 2;
+				top: 180px;
+				background-color: RGBA(0, 0, 0, 0.3);
+				color: #fff;
+			}
+
+			/*鼠标移到切换图标上时*/
+			.arrow:hover {
+				background-color: RGBA(0, 0, 0, 0.7);
+			}
+
+			/*鼠标移到整个div区域时*/
+			#container:hover .arrow {
+				display: block;
+				/*显示*/
+			}
+
+			/*上一个切换图标的左外边距*/
+			#prev {
+				left: 20px;
+			}
+
+			/*下一个切换图标的右外边距*/
+			#next {
+				right: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="container">
+			<div id="list" style="left: -600px;">
+				<img src="img/5.jpg" alt="5" />
+				<img src="img/1.jpg" alt="1" />
+				<img src="img/2.jpg" alt="2" />
+				<img src="img/3.jpg" alt="3" />
+				<img src="img/4.jpg" alt="4" />
+				<img src="img/5.jpg" alt="5" />
+				<img src="img/1.jpg" alt="1" />
+			</div>
+			<div id="pointsDiv">
+				<span index="1" class="on"></span>
+				<span index="2"></span>
+				<span index="3"></span>
+				<span index="4"></span>
+				<span index="5"></span>
+			</div>
+			<a href="javascript:;" id="prev" class="arrow">&lt;</a>
+			<a href="javascript:;" id="next" class="arrow">&gt;</a>
+		</div>
+
+		<script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			layui.use(['jquery'], function() {
+				let $ = layui.jquery
+				// 准备工作
+				let container = $("#container") // 获取外部的容器
+				let list = $("#list") // 获取图片的容器
+				let next = $("#next") // 获取下一页按钮
+				let prev = $("#prev") // 获取上一页按钮
+				const PAGE_WIDTH = 600 // 每张照片的宽度
+				const TIME = 1000 // 每张照片移动的总时间
+				const ITEM_TIME = 50 // 每张照片每次移动的时间
+				let points = $("#pointsDiv>span") // 获取下方圆点的容器
+				let itemCount = $("#pointsDiv").children().length // 获取总共有多少张照片
+				let index = 0 // 当前圆点的下标
+				let isMoving = false; // 当前是否移动
+				// 1. 点击向右(左)的图标, 平滑切换到下(上)一页
+				next.click(function() {
+					nextPage(true)
+				})
+				prev.click(function() {
+					nextPage(false)
+				})
+
+				// 3. 每隔2s自动滑动到下一页
+				let interId = setInterval(function() {
+					nextPage(true)
+				}, 2000)
+
+				// 4. 当鼠标进入图片区域时, 自动切换停止, 当鼠标离开后,又开始自动切换
+				list.hover(
+					// 等同与mouseenter
+					function() {
+						clearInterval(interId)
+						// 等同于mouseleave
+					},
+					function() {
+						interId = setInterval(function() {
+							nextPage(true)
+						}, 2000)
+					})
+
+
+
+				// 6. 点击圆点图标切换到对应的页
+				points.click(function() {
+					// 获取当前点击圆点的索引
+					let index = $(this).index()
+					nextPage(index)
+				})
+
+				function nextPage(isNext) {
+					// 7. 解决bug: 快速点击时, 翻页不正常
+					//如果正在翻页, 直接结束
+					if (isMoving) { //已经正在翻页中
+						return
+					}
+					isMoving = true; // 标识正在翻页
+					// 获取当前的图片容器的left值
+					let currentLeft = list.position().left
+					// 根据左右按钮，求出每张照片需要移动的总距离
+					let itemTotalDistance = 0
+					if (typeof isNext === "boolean") {
+						itemTotalDistance = isNext ? -PAGE_WIDTH : PAGE_WIDTH;
+					} else {
+						itemTotalDistance = -(isNext - index) * PAGE_WIDTH
+					}
+
+					// 求出每张需要移动的目标位置
+					let targetLeft = currentLeft + itemTotalDistance
+					// 求出每张照片每次移动的距离
+					let itemDistance = itemTotalDistance / (TIME / ITEM_TIME)
+					// 启动定时器进行平滑翻页
+					let interId = setInterval(function() {
+						currentLeft += itemDistance
+						// 当移动到目标位置的时候，停止定时器
+						if (currentLeft === targetLeft) {
+							clearInterval(interId)
+							// 标识翻页停止
+							isMoving = false;
+						}
+						// 2. 无限循环切换: 第一页的上一页为最后页, 最后一页的下一页是第一页
+						// 说明：当向右移动到最后1.jpg的时候，目标位置瞬间移动到开始的1.jpg
+						//      当向左移动到前面5.jpg的时候，目标位置瞬间移动到最后的5.jpg
+						let rightTarget = -(itemCount + 1) * PAGE_WIDTH
+						let leftTarget = -itemCount * PAGE_WIDTH
+						if (currentLeft === rightTarget) {
+							currentLeft = -PAGE_WIDTH
+						}
+						if (currentLeft === 0) {
+							currentLeft = leftTarget
+						}
+						list.css("left", currentLeft)
+					}, ITEM_TIME)
+
+					// 5. 切换页面时, 下面的圆点也同步更新
+					updatePoints(isNext);
+
+				}
+
+				// 更新圆点
+				function updatePoints(isNext) {
+					// 计算出目标圆点的下标targetIndex
+					let targetIndex = 0;
+					if (typeof isNext === "boolean") {
+						if (isNext) {
+							targetIndex = index + 1
+							if (targetIndex >= itemCount) { // 此时看到的是1.jpg-->第1个圆点
+								targetIndex = 0
+							}
+						} else {
+							targetIndex = index - 1
+							if (targetIndex === -1) { // 此时看到的是5.jpg-->第5个圆点
+								targetIndex = itemCount - 1
+							}
+						}
+					} else {
+						targetIndex = isNext
+					}
+
+					// 移除当前的class
+					// points.eq(index).removeClass("on")
+					points[index].className = ""
+					// 给目标圆点添加class
+					// points.eq(targetIndex).addClass("on")
+					points[targetIndex].className = "on"
+
+					// 将index更新为targetIndex
+					index = targetIndex
+
+
+				}
+
+
+			})
+		</script>
+	</body>
+
+</html>
