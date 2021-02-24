@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">消息框</h1>
+		</header>
+		<div class="mui-content">
+			<button type="button" class="mui-btn mui-btn-blue" onclick="showDialog(1);">警告框</button>
+			<button type="button" class="mui-btn mui-btn-green" onclick="showDialog(2);">确认框</button>
+			<button type="button" class="mui-btn mui-btn-red" onclick="showDialog(3);">输入对话框</button>
+		</div>
+		<script type="text/javascript">
+			function showDialog(num){
+				if(num == 1){
+					mui.alert("请不要这么操作", "提醒", "确定", function(e){
+						mui.toast(e.index)
+					})
+				}else if(num == 2){
+					mui.confirm("请确定要这么操作吗?", "提醒", ["取消", "确定"], function(e){
+						if(e.index == 1){
+							mui.toast(e.index)   // 代表点击的是确定按钮
+						}else{
+							mui.toast("取消了")
+						}
+						
+					})
+					
+				}else if(num == 3){
+					mui.prompt("请输入您的姓名","张三","输入", ["取消", "确定"], function(e){
+						if(e.index == 1){
+							mui.toast(e.value)   // 代表点击的是确定按钮,获取输入的值
+						}else{
+							mui.toast("取消了")
+						}
+					})
+				}
+			}
+		</script>
+	</body>
+
+</html>

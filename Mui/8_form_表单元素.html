@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">表单元素</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+			    <div class="mui-input-row" style="width: 80%;">
+			        <label>用户名</label>
+				<!-- 快速删除：只需要在input控件上添加.mui-input-clear类，当input 控件中有内容时，右侧会有一个删除图标，点击会清空当前input的内容 -->
+			    <input type="text" class="mui-input-clear" placeholder="请输入用户名">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>密码</label>
+					<!-- 密码框：给input元素添加.mui-input-password类即可使用 -->
+			        <input type="password" class="mui-input-password" placeholder="请输入密码">
+			    </div>
+				<!-- 搜索框：在.mui-input-row同级添加.mui-input-search 类，就可以使用search控件 -->
+				<div class="mui-input-row mui-search">
+				    <input type="search" class="mui-input-clear" placeholder="搜索框">
+				</div>
+			    <div class="mui-button-row">
+			        <button type="button" class="mui-btn mui-btn-primary" >确认</button>
+			        <button type="button" class="mui-btn mui-btn-danger" >取消</button>
+			    </div>
+			</form>
+			<!-- 注意：
+			mui在mui.init()中会自动初始化基本控件,但是 动态添加的Input组件需要重新进行初始化
+			mui('.mui-input-row input').input(); -->
+		</div>
+	</body>
+
+</html>
