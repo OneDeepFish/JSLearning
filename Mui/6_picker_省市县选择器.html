@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.min.css" />
+		<button id="btn" type="button" class="mui-btn mui-btn-green mui-btn-block">省市县选择</button>
+	</head>
+
+	<body>
+		<script src="js/mui.js"></script>
+		<script src="js/mui.picker.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+			let btn = document.getElementById("btn")
+			btn.addEventListener("tap", function() {
+				let dtPicker = new mui.PopPicker({
+					layer: 2, // 列数 2层
+					buttons: ['取消', '确定']
+				})
+				dtPicker.setData([{
+					value: '110000',
+					text: '北京市',
+					children: [{
+						value: "110101",
+						text: "东城区"
+					}]
+				}, {
+					value: '120000',
+					text: '天津市',
+					children: [{
+						value: "120101",
+						text: "和平区"
+					}, {
+						value: "120102",
+						text: "河东区"
+					}, {
+						value: "120104",
+						text: "南开区"
+					}]
+				}])
+				// 默认显示天津市 河东区
+				// 0代表第一层   1代表第二个值
+				// 1代表第二层   2代表第二个值
+				dtPicker.pickers[0].setSelectedIndex(1);
+				dtPicker.pickers[1].setSelectedIndex(1);
+				dtPicker.show(function(result){
+					console.log(result)  // result为数组
+					let re = "";
+					for (var i = 0; i < result.length; i++) {
+						re += result[i].value  // 值的拼接字符串
+						re += result[i].text   // 文本的拼接字符串
+					}
+					mui.toast(re)
+					// 释放资源
+					dtPicker.dispose()
+					dtPicker = null
+				})
+			})
+		</script>
+	</body>
+
+</html>
