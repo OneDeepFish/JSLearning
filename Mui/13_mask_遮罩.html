@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-backdrop {
+			    position: fixed;
+			    top: 0;
+			    right: 0;
+			    bottom: 0;
+			    left: 0;
+			    z-index: 998;
+			    background-color: rgba(0,0,0,.3);
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">遮罩蒙版</h1>
+		</header>
+		<div class="mui-content">
+			<button id="btn" type="button" class="mui-btn mui-btn-blue">开启蒙版</button>
+			<!-- swith开关 -->
+			<div class="mui-switch mui-switch-blue mui-active" id="mySwitch">
+			  <div class="mui-switch-handle"></div>
+			</div>
+			<button id="btns" type="button" class="mui-btn mui-btn-green">获取值</button>
+		</div>
+		<script type="text/javascript">
+			document.getElementById("btn").addEventListener("click", function(){
+				//callback为用户点击蒙版时自动执行的回调；
+				let mask = mui.createMask(function(){
+					mui.toast("遮罩蒙版取消了")
+				})
+				// 开启蒙版
+				mask.show()
+				// 关闭蒙版  mask.close();//关闭遮罩
+			})
+			// switch开关事件
+			document.getElementById("mySwitch").addEventListener("toggle",function(event){
+			  if(event.detail.isActive){
+			    console.log("你启动了开关");
+			  }else{
+			    console.log("你关闭了开关");  
+			  }
+			})
+			// 获取switch开关的值
+			document.getElementById("btns").addEventListener("click", function(){
+				var isActive = document.getElementById("mySwitch").classList.contains("mui-active");
+				if(isActive){
+				  console.log("打开状态");
+				}else{
+				  console.log("关闭状态");  
+				}
+			})
+			
+			
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">进度条和滑块</h1>
+		</header>
+		<div class="mui-content">
+			<!-- 进度条 -->
+			<div id="demo1" class="mui-progressbar" style="top:30px">
+				<span></span>
+			</div>
+			
+			<button id="pbtn" type="button" class="mui-btn mui-btn-purple" style="top:50px">设置</button>
+			<button id="cbtn" type="button" class="mui-btn mui-btn-purple" style="top:50px">关闭</button>
+			
+			<div class="mui-input-row mui-input-range" style="top:80px">
+				<label>得分</label>
+				<input type="range" min="0" max="100" id="range">
+			</div>
+			
+			<button id="rsbtn" type="button" class="mui-btn mui-btn-purple" style="top:100px">设置</button>
+			<button id="rgbtn" type="button" class="mui-btn mui-btn-purple" style="top:100px">获取</button>
+		</div>
+		
+		<script type="text/javascript">
+			// 初始化
+			mui("#demo1").progressbar({progress:20}).show();
+			let pbtn = document.getElementById("pbtn")
+			// 设置进度条的值
+			pbtn.addEventListener("click", function(){
+				mui("#demo1").progressbar().setProgress(50);
+			}) 
+			// 关闭进度条(关闭进度条一般用于动态创建（DOM中预先未定义）的进度条，调用hide方法后，会直接删掉对应的DOM节点；若已提前创建好DOM节点的进度条，调用hide方法无效)
+			document.getElementById("cbtn").addEventListener("click", function(){
+				mui("#demo1").progressbar().hide();
+			}) 
+			
+			// 设置滑块的值
+			document.getElementById("rsbtn").addEventListener("click", function(){
+				document.getElementById("range").value=90
+			}) 
+			
+			// 获取滑块的值
+			document.getElementById("rgbtn").addEventListener("click", function(){
+				mui.toast(document.getElementById("range").value)
+			}) 
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+	</head>
+	<body>
+		<script src="js/mui.js"></script>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新页面</h1>
+		</header>
+		
+		<script type="text/javascript">
+			mui.init()
+
+
+    			mui.plusReady(function(){
+				alert("走到这里了2")
+			    let sData = plus.webview.currentWebview()
+				// 获取从前面页面传过来的值
+				let family = sData.family
+				mui.toast(JSON.stringify(family))
+			})
+		</script>
+	</body>
+</html>

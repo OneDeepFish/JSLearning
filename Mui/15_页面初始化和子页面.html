@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-backdrop {
+				position: fixed;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				z-index: 998;
+				background-color: rgba(0, 0, 0, .3);
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+			// 目标页面分解为主页面和内容页面，主页面显示卡头卡尾区域，比如顶部导航、底部选项卡等；
+			// 内容页面显示具体需要滚动的内容，然后在主页面中调用mui.init方法初始化内容页面
+			mui.init({
+				subpages: [{
+					url: "list.html", //子页面HTML地址，支持本地地址和网络地址
+					id: "list.html", //子页面标志
+					styles: {
+						top: "45px", //子页面顶部位置
+						bottom: "0px" //子页面底部位置
+					}
+				}]
+			}) // 页面初始化，mui组件的初始化
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">打开子页面</h1>
+		</header>
+		<script type="text/javascript">
+			// 在app开发中，若要使用HTML5+扩展api，必须等plusready事件发生后才能正常使用
+			mui.plusReady(function() {
+				
+			})
+		</script>
+	</body>
+
+</html>
